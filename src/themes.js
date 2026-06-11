@@ -1,4 +1,4 @@
-// The four worlds Vaiana journeys through, in order. The map changes every 5
+// The four worlds the hero journeys through, in order. The map changes every 5
 // levels (see levels.js), so theme = floor(levelIndex / 5). Each theme carries a
 // full palette plus the keys of its themed treasure, critter, ambient particles
 // and scatter decorations — everything the renderer needs to dress a level so it
@@ -29,8 +29,8 @@ export const THEMES = [
     names: ['Coral Shallows', 'Turtle Lagoon', 'Open Sea', 'Reef Labyrinth', 'Stormy Deep'],
   },
   {
-    key: 'tefiti',
-    name: 'Te Fiti',
+    key: 'meadow',
+    name: 'Meadow',
     emoji: '🌺',
     bgTop: 0x9be86b,
     bgBottom: 0x1f7a3a,
@@ -86,7 +86,7 @@ export const THEMES = [
     enemyName: 'fire sprite',
     particle: 'ember',
     deco: ['rock', 'crystal', 'lavacrack'],
-    names: ['Ash Plains', 'Ember Caves', 'Lava Flows', "Te Kā's Lair", 'Heart of Te Fiti'],
+    names: ['Ash Plains', 'Ember Caves', 'Lava Flows', 'Molten Lair', 'The Spirit Stone'],
   },
 ];
 

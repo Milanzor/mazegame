@@ -1,7 +1,7 @@
 {
-  "name": "vaiana-maze",
+  "name": "lani-maze",
   "version": "1.0.0",
-  "description": "Vaiana's Maze — guide Vaiana through ocean, Te Fiti, jungle and lava mazes to find the Heart of Te Fiti",
+  "description": "Lani's Maze — guide Lani through ocean, meadow, jungle and lava mazes to find the Spirit Stone",
   "type": "module",
   "scripts": {
     "dev": "vite",

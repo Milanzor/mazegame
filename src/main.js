@@ -76,7 +76,7 @@ initUpdateCheck();
 // iPad / touch polish — stop double-tap and pinch from zooming or scrolling the
 // page out from under the game. (iOS Safari ignores `user-scalable=no`, so the
 // gestures have to be blocked in JS.) None of this interferes with the
-// single-finger drag that steers Vaiana.
+// single-finger drag that steers the hero.
 // ===========================================================================
 let lastTouchEnd = 0;
 document.addEventListener(

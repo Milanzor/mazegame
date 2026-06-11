@@ -56,8 +56,8 @@ export default class Game extends Phaser.Scene {
     this.scatterDecorations(decoCells);
     this.buildColliders();
 
-    // ---- The Heart of Te Fiti (goal) ----------------------------------
-    this.placeHeart(goal);
+    // ---- The Spirit Stone (goal) --------------------------------------
+    this.placeStone(goal);
 
     // ---- Treasures -----------------------------------------------------
     this.treasureGroup = this.physics.add.group();
@@ -67,8 +67,8 @@ export default class Game extends Phaser.Scene {
     const sp = this.cellCenter(start.c, start.r);
     this.add.image(sp.x, sp.y, 'canoe').setScale((this.tile * 0.9) / 110 / RENDER_SCALE).setDepth(0).setAlpha(0.9);
 
-    // ---- Vaiana --------------------------------------------------------
-    this.hero = this.physics.add.image(sp.x, sp.y, 'vaiana');
+    // ---- Lani (the hero) ----------------------------------------------
+    this.hero = this.physics.add.image(sp.x, sp.y, 'hero');
     this.hero.setScale((this.tile * 0.82) / 120 / RENDER_SCALE).setDepth(10);
     this.setCircleBody(this.hero, this.tile * 0.3);
     this.hero.setCollideWorldBounds(true);
@@ -84,7 +84,7 @@ export default class Game extends Phaser.Scene {
     this.physics.add.collider(this.hero, this.wallBodies);
     this.physics.add.overlap(this.hero, this.treasureGroup, this.onCollect, null, this);
     this.physics.add.overlap(this.hero, this.critterGroup, this.onBump, null, this);
-    this.physics.add.overlap(this.hero, this.heart, this.onReachHeart, null, this);
+    this.physics.add.overlap(this.hero, this.stone, this.onReachStone, null, this);
 
     // ---- Input ---------------------------------------------------------
     this.input.on('pointerdown', (p) => {
@@ -224,17 +224,17 @@ export default class Game extends Phaser.Scene {
     }
   }
 
-  placeHeart(goal) {
+  placeStone(goal) {
     const p = this.cellCenter(goal.c, goal.r);
-    this.heartGlow = this.add.image(p.x, p.y, 'heartglow').setScale((this.tile * 1.6) / 240 / RENDER_SCALE).setDepth(3);
-    this.heartGlow.setBlendMode(Phaser.BlendModes.ADD);
-    this.tweens.add({ targets: this.heartGlow, scale: (this.tile * 2.1) / 240 / RENDER_SCALE, alpha: 0.55, duration: 1300, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    this.stoneGlow = this.add.image(p.x, p.y, 'stoneglow').setScale((this.tile * 1.6) / 240 / RENDER_SCALE).setDepth(3);
+    this.stoneGlow.setBlendMode(Phaser.BlendModes.ADD);
+    this.tweens.add({ targets: this.stoneGlow, scale: (this.tile * 2.1) / 240 / RENDER_SCALE, alpha: 0.55, duration: 1300, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
-    this.heart = this.physics.add.image(p.x, p.y, 'heart').setScale((this.tile * 0.7) / 120 / RENDER_SCALE).setDepth(4);
-    this.heart.body.setAllowGravity(false);
-    this.heart.setImmovable(true);
-    this.setCircleBody(this.heart, this.tile * 0.34);
-    this.tweens.add({ targets: this.heart, y: p.y - this.tile * 0.12, angle: { from: -8, to: 8 }, duration: 1800, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    this.stone = this.physics.add.image(p.x, p.y, 'stone').setScale((this.tile * 0.7) / 120 / RENDER_SCALE).setDepth(4);
+    this.stone.body.setAllowGravity(false);
+    this.stone.setImmovable(true);
+    this.setCircleBody(this.stone, this.tile * 0.34);
+    this.tweens.add({ targets: this.stone, y: p.y - this.tile * 0.12, angle: { from: -8, to: 8 }, duration: 1800, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
   }
 
   placeTreasure(cell, i) {
@@ -301,8 +301,8 @@ export default class Game extends Phaser.Scene {
   }
 
   intro() {
-    // A quick directional sparkle trail from Vaiana toward the Heart on start.
-    const a = Phaser.Math.Angle.Between(this.hero.x, this.hero.y, this.heart.x, this.heart.y);
+    // A quick directional sparkle trail from Lani toward the Spirit Stone on start.
+    const a = Phaser.Math.Angle.Between(this.hero.x, this.hero.y, this.stone.x, this.stone.y);
     for (let i = 1; i <= 4; i++) {
       const s = this.add.image(this.hero.x + Math.cos(a) * i * 26, this.hero.y + Math.sin(a) * i * 26, 'spark').setScale(0.4 / RENDER_SCALE).setDepth(20).setAlpha(0);
       this.tweens.add({ targets: s, alpha: { from: 0, to: 0.9 }, duration: 240, delay: i * 90, yoyo: true, hold: 60, onComplete: () => s.destroy() });
@@ -353,7 +353,7 @@ export default class Game extends Phaser.Scene {
     this.floatText(hero.x, hero.y - this.tile * 0.6, 'oops!', '#ffd277');
   }
 
-  onReachHeart() {
+  onReachStone() {
     if (this.over) return;
     this.win();
   }
@@ -368,7 +368,7 @@ export default class Game extends Phaser.Scene {
   update() {
     if (this.over) return;
 
-    // Vaiana follows the finger, unless briefly frozen from a bump.
+    // Lani follows the finger, unless briefly frozen from a bump.
     const frozen = this.frozenUntil > this.time.now;
     if (frozen) {
       this.hero.setVelocity(this.hero.body.velocity.x * 0.6, this.hero.body.velocity.y * 0.6);
@@ -517,9 +517,9 @@ export default class Game extends Phaser.Scene {
     this.critterGroup.children.iterate((c) => c && c.body && c.body.setVelocity(0, 0));
     playWin();
 
-    // Big celebratory sparkle at the Heart.
+    // Big celebratory sparkle at the Spirit Stone.
     for (let i = 0; i < 16; i++) {
-      this.time.delayedCall(i * 40, () => this.sparkle(this.heart.x, this.heart.y));
+      this.time.delayedCall(i * 40, () => this.sparkle(this.stone.x, this.stone.y));
     }
 
     const stars = this.computeStars();
@@ -546,7 +546,7 @@ export default class Game extends Phaser.Scene {
 
     panel.add(
       this.add
-        .text(0, -194, 'You found the Heart! 🎉', { fontFamily: 'Arial Black, Arial, sans-serif', fontSize: '42px', color: '#ffffff' })
+        .text(0, -194, 'You found the Spirit Stone! 🎉', { fontFamily: 'Arial Black, Arial, sans-serif', fontSize: '42px', color: '#ffffff' })
         .setOrigin(0.5)
     );
 

@@ -78,9 +78,9 @@ function drawStar(g, cx, cy, outer, inner, color) {
 
 export function createTextures(scene) {
   // =========================================================================
-  // VAIANA — the hero, a front-facing chibi (flips L/R, leans into movement)
+  // LANI — the hero, a front-facing chibi (flips L/R, leans into movement)
   // =========================================================================
-  bake(scene, 'vaiana', 120, 144, (g) => {
+  bake(scene, 'hero', 120, 144, (g) => {
     const HAIR = 0x241712;
     const HAIRHI = 0x3a2418;
     const SKIN = 0x8a5a36;
@@ -117,7 +117,7 @@ export function createTextures(scene) {
     g.fillCircle(80, 70, 7);
     // Flower tucked in her hair.
     flower(g, 90, 40, 11, 0xff5d8f, 0xffe066);
-    // The Heart pendant on her necklace.
+    // A little gem pendant on her necklace.
     g.lineStyle(3, 0xe8c98a, 1);
     g.beginPath();
     g.arc(60, 100, 16, Phaser.Math.DegToRad(20), Phaser.Math.DegToRad(160), false);
@@ -129,9 +129,9 @@ export function createTextures(scene) {
   });
 
   // =========================================================================
-  // THE HEART OF TE FITI — glowing greenstone spiral (the goal)
+  // THE SPIRIT STONE — glowing greenstone spiral (the goal)
   // =========================================================================
-  bake(scene, 'heart', 120, 120, (g) => {
+  bake(scene, 'stone', 120, 120, (g) => {
     glow(g, 60, 60, 58, 0x4dffd0, 0.07);
     // Stone body.
     g.fillStyle(0x0f6f5e, 1);
@@ -161,8 +161,8 @@ export function createTextures(scene) {
     drawStar(g, 86, 40, 7, 3, 0xffffff);
   });
 
-  // A separate soft glow disc, pulsed under the Heart in-scene.
-  bake(scene, 'heartglow', 240, 240, (g) => {
+  // A separate soft glow disc, pulsed under the Spirit Stone in-scene.
+  bake(scene, 'stoneglow', 240, 240, (g) => {
     glow(g, 120, 120, 118, 0x4dffd0, 0.06);
   });
 
@@ -216,7 +216,7 @@ export function createTextures(scene) {
     g.fillCircle(cx, cy - 2, 3);
   });
 
-  // Te Fiti: bright flower.
+  // Meadow: bright flower.
   bake(scene, 'flower', 84, 84, (g) => {
     g.fillStyle(0x2e8b57, 1);
     g.fillRoundedRect(40, 44, 4, 34, 2); // stem
@@ -309,7 +309,7 @@ export function createTextures(scene) {
     smile(g, 48, 58, 8);
   });
 
-  // Te Fiti: bumble bee.
+  // Meadow: bumble bee.
   bake(scene, 'bee', 96, 88, (g) => {
     // wings
     g.fillStyle(0xcfeeff, 0.8);
@@ -540,7 +540,7 @@ export function createTextures(scene) {
     g.fillCircle(44, 26, 3);
   });
 
-  // Start marker — Vaiana's little canoe, drawn top-down.
+  // Start marker — the hero's little canoe, drawn top-down.
   bake(scene, 'canoe', 110, 70, (g) => {
     g.fillStyle(0x000000, 0.18);
     g.fillEllipse(56, 52, 96, 26);

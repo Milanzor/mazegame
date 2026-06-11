@@ -1,7 +1,7 @@
 // Tiny localStorage wrapper for saving the best star rating per level.
 // Fails silently if storage is unavailable (e.g. private browsing).
-const KEY = 'vaiana-maze-progress-v1';
-const MUTE_KEY = 'vaiana-maze-muted-v1';
+const KEY = 'lani-maze-progress-v1';
+const MUTE_KEY = 'lani-maze-muted-v1';
 
 // Remembered sound on/off choice (defaults to sound ON).
 export function getMuted() {

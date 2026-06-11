@@ -5,7 +5,7 @@
 //
 // The maze itself is never a "fail" — you always reach the Heart eventually.
 // Stars reward mastery, not luck:
-//   ⭐ reach the Heart of Te Fiti      (always earned on finishing)
+//   ⭐ reach the Spirit Stone          (always earned on finishing)
 //   ⭐ collect every themed treasure   (shells / flowers / berries / gems)
 //   ⭐ finish under par time           (critters slow you down, so dodge them)
 

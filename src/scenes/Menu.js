@@ -19,19 +19,19 @@ export default class Menu extends Phaser.Scene {
     this.add.image(110, H, 'palm').setOrigin(0.5, 1).setScale(1.4 / RENDER_SCALE).setDepth(-10);
     this.add.image(W - 110, H, 'palm').setOrigin(0.5, 1).setScale(1.5 / RENDER_SCALE).setFlipX(true).setDepth(-10);
 
-    // The glowing Heart of Te Fiti floating above the title.
-    const glow = this.add.image(W / 2, H * 0.30, 'heartglow').setScale(1.1 / RENDER_SCALE).setDepth(0);
+    // The glowing Spirit Stone floating above the title.
+    const glow = this.add.image(W / 2, H * 0.30, 'stoneglow').setScale(1.1 / RENDER_SCALE).setDepth(0);
     this.tweens.add({ targets: glow, scale: 1.35 / RENDER_SCALE, alpha: 0.6, duration: 1600, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
-    const heart = this.add.image(W / 2, H * 0.30, 'heart').setScale(0.9 / RENDER_SCALE).setDepth(1);
-    this.tweens.add({ targets: heart, y: heart.y - 16, angle: { from: -6, to: 6 }, duration: 2000, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    const stone = this.add.image(W / 2, H * 0.30, 'stone').setScale(0.9 / RENDER_SCALE).setDepth(1);
+    this.tweens.add({ targets: stone, y: stone.y - 16, angle: { from: -6, to: 6 }, duration: 2000, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
-    // Vaiana waving beside the title.
-    const v = this.add.image(W * 0.30, H * 0.52, 'vaiana').setScale(1.5 / RENDER_SCALE).setDepth(2);
+    // Lani waving beside the title.
+    const v = this.add.image(W * 0.30, H * 0.52, 'hero').setScale(1.5 / RENDER_SCALE).setDepth(2);
     this.tweens.add({ targets: v, angle: { from: -5, to: 5 }, y: v.y - 12, duration: 1700, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
     // Title.
     const title = this.add
-      .text(W / 2, H * 0.50, "Vaiana's\nMaze", {
+      .text(W / 2, H * 0.50, "Lani's\nMaze", {
         fontFamily: 'Arial Black, Arial, sans-serif',
         fontSize: '92px',
         color: '#ffffff',
@@ -45,7 +45,7 @@ export default class Menu extends Phaser.Scene {
     this.tweens.add({ targets: title, scale: { from: 1, to: 1.04 }, duration: 1500, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
 
     this.add
-      .text(W / 2, H * 0.64, 'Find the Heart of Te Fiti', {
+      .text(W / 2, H * 0.64, 'Find the Spirit Stone', {
         fontFamily: 'Arial, sans-serif',
         fontSize: '30px',
         color: '#eafff9',

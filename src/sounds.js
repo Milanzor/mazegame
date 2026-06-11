@@ -69,7 +69,7 @@ export function playTap() {
   tone(620, 0.07, 0, 'square', 0.08);
 }
 
-// Triumphant island fanfare for reaching the Heart of Te Fiti.
+// Triumphant island fanfare for reaching the Spirit Stone.
 export function playWin() {
   const notes = [523, 659, 784, 1047, 1319]; // C E G C E
   notes.forEach((f, i) => tone(f, 0.24, i * 0.13, 'triangle', 0.16));

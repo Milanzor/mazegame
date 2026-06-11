@@ -141,7 +141,7 @@ export default class LevelSelect extends Phaser.Scene {
 
     if (unlocked) {
       // A preview treasure/heart icon in the body.
-      card.add(this.add.image(0, -6, index % 20 === 19 ? 'heart' : theme.treasure).setScale(0.62 / RENDER_SCALE));
+      card.add(this.add.image(0, -6, index % 20 === 19 ? 'stone' : theme.treasure).setScale(0.62 / RENDER_SCALE));
     } else {
       card.add(this.add.text(0, -6, '🔒', { fontSize: '46px' }).setOrigin(0.5));
     }
