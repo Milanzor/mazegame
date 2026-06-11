@@ -75,6 +75,11 @@ export default class Game extends Phaser.Scene {
     this.physics.world.setBounds(this.mx, this.my, this.mwpx, this.mhpx);
     this.target = { x: sp.x, y: sp.y };
     this.maxSpeed = Math.max(300, this.tile * 8);
+    // Grid-locked movement: Lani always rides corridor lanes, walking tile to
+    // tile, so she never drifts floatily between the walls. `gpos` is the open
+    // tile she is currently heading to (and rests on); `step` is her facing.
+    this.gpos = { gx: start.c * 2 + 1, gy: start.r * 2 + 1 };
+    this.step = { x: 0, y: 0 };
 
     // ---- Critters ------------------------------------------------------
     this.critterGroup = this.physics.add.group();
@@ -124,6 +129,12 @@ export default class Game extends Phaser.Scene {
   }
   cellCenter(c, r) {
     return this.tileCenter(c * 2 + 1, r * 2 + 1);
+  }
+  tileOf(wx, wy) {
+    return {
+      gx: Math.floor((wx - this.mx) / this.tile),
+      gy: Math.floor((wy - this.my) / this.tile),
+    };
   }
 
   // Give a sprite a circular physics body of the requested *world* radius,
@@ -300,6 +311,35 @@ export default class Game extends Phaser.Scene {
     };
   }
 
+  // Greedy one-tile step toward the finger, locked to open corridors. Tries the
+  // axis with the bigger gap first, then the other — so Lani rounds corners on
+  // her own and only ever stops in a lane centre, never wedged against a wall.
+  chooseNextTile() {
+    const finger = this.tileOf(this.target.x, this.target.y);
+    const dgx = finger.gx - this.gpos.gx;
+    const dgy = finger.gy - this.gpos.gy;
+    if (dgx === 0 && dgy === 0) {
+      this.step = { x: 0, y: 0 };
+      return;
+    }
+    const sx = Math.sign(dgx);
+    const sy = Math.sign(dgy);
+    const moves = Math.abs(dgx) >= Math.abs(dgy)
+      ? [[sx, 0], [0, sy]]
+      : [[0, sy], [sx, 0]];
+    for (const [mx, my] of moves) {
+      if (mx === 0 && my === 0) continue;
+      const nx = this.gpos.gx + mx;
+      const ny = this.gpos.gy + my;
+      if (isOpenTile(this.maze, nx, ny)) {
+        this.gpos = { gx: nx, gy: ny };
+        this.step = { x: mx, y: my };
+        return;
+      }
+    }
+    this.step = { x: 0, y: 0 };
+  }
+
   intro() {
     // A quick directional sparkle trail from Lani toward the Spirit Stone on start.
     const a = Phaser.Math.Angle.Between(this.hero.x, this.hero.y, this.stone.x, this.stone.y);
@@ -365,25 +405,40 @@ export default class Game extends Phaser.Scene {
   }
 
   // ---- Main loop -------------------------------------------------------
-  update() {
+  update(time, delta) {
     if (this.over) return;
 
-    // Lani follows the finger, unless briefly frozen from a bump.
+    // Lani walks the corridor lanes, tile to tile, toward the finger — never
+    // drifting diagonally between walls. Velocity stays 0; we move her position
+    // directly so the physics overlaps (treasures, critters, stone) still fire.
+    this.hero.setVelocity(0, 0);
     const frozen = this.frozenUntil > this.time.now;
-    if (frozen) {
-      this.hero.setVelocity(this.hero.body.velocity.x * 0.6, this.hero.body.velocity.y * 0.6);
-    } else {
-      const dx = this.target.x - this.hero.x;
-      const dy = this.target.y - this.hero.y;
-      const dist = Math.hypot(dx, dy);
-      if (dist > 4) {
-        const speed = Math.min(this.maxSpeed, dist * 6);
-        const a = Math.atan2(dy, dx);
-        this.hero.setVelocity(Math.cos(a) * speed, Math.sin(a) * speed);
-        this.hero.setFlipX(dx < 0);
-        this.hero.setAngle(Phaser.Math.Clamp(dx * 0.04, -10, 10));
+    if (!frozen) {
+      const stepPx = this.maxSpeed * (delta / 1000);
+      const dest = this.tileCenter(this.gpos.gx, this.gpos.gy);
+      let dx = dest.x - this.hero.x;
+      let dy = dest.y - this.hero.y;
+      let d = Math.hypot(dx, dy);
+
+      if (d <= stepPx) {
+        // Arrived at the lane centre — snap, then pick the next tile to walk to.
+        this.hero.x = dest.x;
+        this.hero.y = dest.y;
+        this.chooseNextTile();
+        const dest2 = this.tileCenter(this.gpos.gx, this.gpos.gy);
+        dx = dest2.x - this.hero.x;
+        dy = dest2.y - this.hero.y;
+        d = Math.hypot(dx, dy);
+      }
+
+      if (d > 0.001) {
+        const m = Math.min(stepPx, d);
+        this.hero.x += (dx / d) * m;
+        this.hero.y += (dy / d) * m;
+        if (dx < -0.001) this.hero.setFlipX(true);
+        else if (dx > 0.001) this.hero.setFlipX(false);
+        this.hero.setAngle(Phaser.Math.Clamp(dx * 0.05, -8, 8));
       } else {
-        this.hero.setVelocity(this.hero.body.velocity.x * 0.8, this.hero.body.velocity.y * 0.8);
         this.hero.setAngle(this.hero.angle * 0.9);
       }
     }
