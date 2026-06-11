@@ -1,0 +1,17 @@
+{
+  "name": "vaiana-maze",
+  "version": "1.0.0",
+  "description": "Vaiana's Maze — guide Vaiana through ocean, Te Fiti, jungle and lava mazes to find the Heart of Te Fiti",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.0"
+  }
+}

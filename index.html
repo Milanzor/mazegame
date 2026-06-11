@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0a4a6e" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Vaiana Maze" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌺</text></svg>"
+    />
+    <title>🌺 Vaiana's Maze — The Heart of Te Fiti</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #0a4a6e;
+        /* Stop the browser from hijacking touches for scroll/zoom/select. */
+        touch-action: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        overscroll-behavior: none;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+      #game {
+        position: fixed;
+        inset: 0;
+      }
+      /* Simple loading splash shown until Phaser paints its first frame. */
+      #splash {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(160deg, #2bb7e6, #0a4a6e);
+        color: #fff;
+        font-size: 7vmin;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-shadow: 0 3px 0 rgba(6, 48, 72, 0.5);
+        z-index: 10;
+        transition: opacity 0.4s ease;
+      }
+      #splash.hide {
+        opacity: 0;
+        pointer-events: none;
+      }
+      /* "New version!" button — hidden until the updater spots a fresh deploy. */
+      #updateBtn {
+        position: fixed;
+        top: max(10px, env(safe-area-inset-top));
+        left: max(10px, env(safe-area-inset-left));
+        z-index: 20;
+        border: none;
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-size: 20px;
+        font-weight: 800;
+        color: #5a2d12;
+        background: #ffd23c;
+        box-shadow: 0 3px 0 rgba(90, 45, 18, 0.35);
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      #updateBtn[hidden] {
+        display: none;
+      }
+      #updateBtn.available {
+        animation: updatePulse 1.2s ease-in-out infinite;
+      }
+      @keyframes updatePulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.12);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game"></div>
+    <div id="splash">🌺 Setting sail…</div>
+    <button id="updateBtn" title="New version! Tap to update" hidden>✨ Update</button>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
